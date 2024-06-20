@@ -4,6 +4,8 @@ import face_recognition
 import cv2
 import numpy as np
 import os
+# import gpiod
+
 # This is a demo of running face recognition on live video from your webcam. It's a little more complicated than the
 # other example, but it includes some basic performance tweaks to make things run a lot faster:
 #   1. Process each video frame at 1/4 resolution (though still display it at full resolution)
@@ -14,7 +16,7 @@ import os
 # specific demo. If you have trouble installing it, try any of the other demos that don't require it instead.
 
 # Get a reference to webcam #0 (the default one)
-video_capture = cv2.VideoCapture(1)
+video_capture = cv2.VideoCapture(0)
 print(video_capture.isOpened())
 
 # Load a sample picture and learn how to recognize it.
@@ -65,7 +67,7 @@ while True:
     if (ret == False):
         print("failed to grab frame")
         continue
-    frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+    # frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
     # Only process every other frame of video to save time
     if process_this_frame:
         # Resize frame of video to 1/4 size for faster face recognition processing
@@ -118,6 +120,14 @@ while True:
         cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
         font = cv2.FONT_HERSHEY_DUPLEX
         cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+        # if (name != "david"):
+        #     # power on gpio pin 14
+        #     print("power on")
+        #     chip = gpiod.Chip('gpiochip0')
+        #     line = chip.get_line(14)
+        #     line.request(consumer='test', type=gpiod.LINE_REQ_DIR_OUT)
+        #     line.set_value(1)
+     
 
     # Display the resulting image
     cv2.imshow('Video', frame)
